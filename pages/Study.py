@@ -1,4 +1,5 @@
 import os
+import io
 import streamlit as st
 from fpdf import FPDF
 
@@ -226,14 +227,20 @@ if st.session_state.selected_section:
         st.write(cram)
         st.markdown('</div>', unsafe_allow_html=True)
 
+        # --- PDF DOWNLOAD ---
         pdf = FPDF()
         pdf.add_page()
         pdf.set_font("Arial", size=12)
-
         for line in cram.split("\n"):
             pdf.multi_cell(0, 8, line)
 
-        pdf.output("exam_cram.pdf")
+        pdf_buffer = io.BytesIO()
+        pdf.output(pdf_buffer)
+        pdf_buffer.seek(0)
 
-        with open("exam_cram.pdf", "rb") as f:
-            st.download_button("📥 Download PDF", f)
+        st.download_button(
+            label="📥 Download PDF",
+            data=pdf_buffer,
+            file_name="exam_cram.pdf",
+            mime="application/pdf"
+        )
