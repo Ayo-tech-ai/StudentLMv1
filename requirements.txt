@@ -3,5 +3,8 @@ langchain
 langchain-community
 langchain-groq
 faiss-cpu
+pypdf
+docx2txt
 sentence-transformers
+torch
 fpdf
